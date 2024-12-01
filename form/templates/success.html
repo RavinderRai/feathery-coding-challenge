@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Successful</title>
+</head>
+<body>
+    <h1>Upload Successful</h1>
+    <p>Your PDF file has been uploaded and processed successfully.</p>
+
+    {% if results %}
+        <h2>Extracted Information:</h2>
+        <ul>
+            {% for result in results %}
+                <li>
+                    <strong>Page {{ result.page }}:</strong> 
+                    <em>Type:</em> {{ result.type }}<br>
+                    <em>Response:</em> {{ result.response }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No relevant information was extracted from the PDF.</p>
+    {% endif %}
+</body>
+</html>
