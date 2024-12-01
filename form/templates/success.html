@@ -3,25 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Successful</title>
+    <title>PDF Analysis Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1c1f26, #2a2e38);
+            color: #d1d5db;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .results-container {
+            background: #2b2f3a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #e4e7ed;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-section {
+            background: #3a4150;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .result-title {
+            color: #e4e7ed;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .result-value {
+            color: #b0b8c1;
+        }
+
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .holdings-table th, .holdings-table td {
+            border: 1px solid #4b5165;
+            padding: 10px;
+            text-align: left;
+            color: #d1d5db;
+        }
+
+        .holdings-table th {
+            background-color: #3a4150;
+            color: #e4e7ed;
+            font-weight: bold;
+        }
+
+        .holdings-table tr:nth-child(even) {
+            background-color: rgba(58, 65, 80, 0.3);
+        }
+
+        .holdings-table tr:hover {
+            background-color: rgba(75, 81, 101, 0.5);
+        }
+
+        .na-value {
+            color: #7c828d;
+            font-style: italic;
+        }
+
+        .upload-link {
+            background-color: #3a4150;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .upload-link:hover {
+            background-color: #4b5165;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload Successful</h1>
-    <p>Your PDF file has been uploaded and processed successfully.</p>
+    <div class="header">
+        <h1>PDF Analysis Results</h1>
+    </div>
 
     {% if results %}
-        <h2>Extracted Information:</h2>
-        <ul>
-            {% for result in results %}
-                <li>
-                    <strong>Page {{ result.page }}:</strong> 
-                    <em>Type:</em> {{ result.type }}<br>
-                    <em>Response:</em> {{ result.response }}
-                </li>
+        {% for result in results %}
+            {% for key, value in result.items %}
+                <div class="result-container">
+                    {% if key == 'Name and cost basis of each holding' %}
+                        <div class="result-title">{{ key }}:</div>
+                        <table class="holdings-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Cost Basis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for holding in value %}
+                                    <tr>
+                                        <td>{{ holding.name }}</td>
+                                        <td>{{ holding.cost_basis }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="result-title">{{ key }}:</div>
+                        <div class="result-value">{{ value }}</div>
+                    {% endif %}
+                </div>
             {% endfor %}
-        </ul>
+        {% endfor %}
     {% else %}
-        <p>No relevant information was extracted from the PDF.</p>
+        <div class="result-container">
+            <p>No results were found.</p>
+        </div>
     {% endif %}
+
+    <a href="/upload" class="upload-link">Upload Another PDF</a>
 </body>
 </html>

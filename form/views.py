@@ -3,17 +3,11 @@ from .forms import PDFUploadForm
 from django.http import HttpResponse
 from .pdf_extraction_pipeline.run_pipeline import run_pipeline
 
-def calculate():
-    x = 1
-    y = 2
-    return x
 
-# Create your views here.
-def say_hello(request):
-    x = calculate()
-    return render(request, 'hello.html', {'name': 'Mosh'})
-
-def upload_pdf(request):
+def upload_pdf(request) -> HttpResponse:
+    """
+    Handle PDF upload and process it through the extraction pipeline.
+    """
     if request.method == 'POST':
         form = PDFUploadForm(request.POST, request.FILES)
         if form.is_valid():
