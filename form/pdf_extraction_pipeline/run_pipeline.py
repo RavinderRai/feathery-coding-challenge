@@ -97,7 +97,7 @@ def run_pipeline(pdf_file) -> list:
     return results
 
 
-def process_relevant_pages(relevant_pages, images, prompt, entity_type, stop_at_first=True, stop_early=7):
+def process_relevant_pages(relevant_pages, images, prompt, entity_type, stop_at_first=True, stop_early=0):
     """
     Helper function to process relevant pages by encoding images and making API calls.
 
